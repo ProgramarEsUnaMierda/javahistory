@@ -31,9 +31,9 @@ public class Java5 {
 
     public void printReleaseDate() {
         System.out.println("");
-        System.out.println("****************************");
+        System.out.println("******************************");
         System.out.println(getVersion().name() + ": " + getVersion().getReleaseDate());
-        System.out.println("****************************");
+        System.out.println("******************************");
         printDescription();
     }
 

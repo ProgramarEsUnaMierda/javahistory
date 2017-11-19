@@ -1,4 +1,4 @@
-package com.peum;
+package com.peum.main;
 
 import com.peum.java5.Java5;
 import com.peum.java6.Java6;

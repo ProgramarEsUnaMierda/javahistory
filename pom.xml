@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.peum</groupId>
   <artifactId>javahistory</artifactId>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>Brief Java History</name>
   <url>http://www.programaresunamierda.com/</url>
@@ -16,10 +16,19 @@
 
   <profiles>
     <profile>
+       <id>java5</id>
+       <properties>
+            <maven.compiler.source>1.5</maven.compiler.source>
+            <maven.compiler.target>1.5</maven.compiler.target>
+            <exclude.file>module-info.java</exclude.file>
+       </properties>
+    </profile>
+    <profile>
        <id>java6</id>
        <properties>
             <maven.compiler.source>1.6</maven.compiler.source>
             <maven.compiler.target>1.6</maven.compiler.target>
+            <exclude.file>module-info.java</exclude.file>
        </properties>
     </profile>
     <profile>
@@ -27,6 +36,7 @@
        <properties>
             <maven.compiler.source>1.7</maven.compiler.source>
             <maven.compiler.target>1.7</maven.compiler.target>
+            <exclude.file>module-info.java</exclude.file>
        </properties>
     </profile>
     <profile>
@@ -34,6 +44,7 @@
        <properties>
             <maven.compiler.source>1.8</maven.compiler.source>
             <maven.compiler.target>1.8</maven.compiler.target>
+            <exclude.file>module-info.java</exclude.file>
        </properties>
     </profile>
     <profile>
@@ -41,44 +52,22 @@
         <activation>
             <activeByDefault>true</activeByDefault>
         </activation>
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.7.0</version>
-                    <configuration>
-                        <release>9</release>
-                    </configuration>
-                </plugin>
-                <!-- Workaround to add main class to module-info.class -->
-                <plugin>
-                    <artifactId>maven-antrun-plugin</artifactId>
-                    <version>1.8</version>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <configuration>
-                                <target>
-                                    <exec executable="${java.home}/bin/jar" failonerror="true">
-                                        <arg value="--main-class"/>
-                                        <arg value="com.peum.JavaHistory"/>
-                                        <arg value="--update"/>
-                                        <arg value="--file"/>
-                                        <arg value="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
-                                    </exec>
-                                </target>
-                            </configuration>
-                            <goals>
-                                <goal>run</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </build>
+       <properties>
+            <maven.compiler.source>1.9</maven.compiler.source>
+            <maven.compiler.target>1.9</maven.compiler.target>
+            <exclude.file>none.java</exclude.file>
+       </properties>
     </profile>
   </profiles>
+
+    <modules>
+        <module>java5</module>
+        <module>java6</module>
+        <module>java7</module>
+        <module>java8</module>
+        <module>java9</module>
+        <module>main</module>
+    </modules>
 
     <build>
         <plugins>
@@ -88,20 +77,10 @@
                 <version>3.7.0</version>
                 <configuration>
                     <excludes>
-                        <exclude>module-info.java</exclude>
+                        <exclude>${exclude.file}</exclude>
                     </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
-                <configuration>
-                <archive>
-                    <manifest>
-                    <mainClass>com.peum.JavaHistory</mainClass>
-                    </manifest>
-                </archive>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
         </plugins>
