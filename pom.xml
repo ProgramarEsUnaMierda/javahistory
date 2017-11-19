@@ -1,0 +1,110 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.peum</groupId>
+  <artifactId>javahistory</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Brief Java History</name>
+  <url>http://www.programaresunamierda.com/</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <profiles>
+    <profile>
+       <id>java6</id>
+       <properties>
+            <maven.compiler.source>1.6</maven.compiler.source>
+            <maven.compiler.target>1.6</maven.compiler.target>
+       </properties>
+    </profile>
+    <profile>
+       <id>java7</id>
+       <properties>
+            <maven.compiler.source>1.7</maven.compiler.source>
+            <maven.compiler.target>1.7</maven.compiler.target>
+       </properties>
+    </profile>
+    <profile>
+       <id>java8</id>
+       <properties>
+            <maven.compiler.source>1.8</maven.compiler.source>
+            <maven.compiler.target>1.8</maven.compiler.target>
+       </properties>
+    </profile>
+    <profile>
+        <id>java9</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                    <configuration>
+                        <release>9</release>
+                    </configuration>
+                </plugin>
+                <!-- Workaround to add main class to module-info.class -->
+                <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <configuration>
+                                <target>
+                                    <exec executable="${java.home}/bin/jar" failonerror="true">
+                                        <arg value="--main-class"/>
+                                        <arg value="com.peum.JavaHistory"/>
+                                        <arg value="--update"/>
+                                        <arg value="--file"/>
+                                        <arg value="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+                                    </exec>
+                                </target>
+                            </configuration>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+  </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <excludes>
+                        <exclude>module-info.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                <archive>
+                    <manifest>
+                    <mainClass>com.peum.JavaHistory</mainClass>
+                    </manifest>
+                </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
